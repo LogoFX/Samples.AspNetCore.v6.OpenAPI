@@ -1,0 +1,9 @@
+openapi: 3.1.0
+info:
+  title: PatientFlowAPI
+  version: '1.0'
+  contact:
+    name: David Kossoglyad
+    email: david@logoui.co.il
+servers:
+  - url: 'http://localhost:3000'
