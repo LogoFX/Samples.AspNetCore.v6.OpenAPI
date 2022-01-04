@@ -1,18 +1,17 @@
 namespace Samples.AspNetCore.v6.Facade.Controllers
 {
-	public partial class WeatherForecastController : IWeatherForecastController
+    internal sealed class WeatherForecastControllerImplementation : IWeatherForecastController
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+        private static readonly string[] Summaries = {
+                "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+            };
 
-		private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<WeatherForecastController> _logger;
 
         private readonly List<WeatherForecast> _data;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
-		{
+        public WeatherForecastControllerImplementation(ILogger<WeatherForecastController> logger)
+        {
             _logger = logger;
 
             var now = DateTime.Now;
@@ -30,25 +29,9 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
             return Task.Run<ICollection<WeatherForecast>>(() => _data.ToArray());
         }
 
-        Task IWeatherForecastController.PostWeatherForecastAsync(WeatherForecast body)
+        Task IWeatherForecastController.PostAsync(WeatherForecast body)
         {
             return Task.Run(() => { _data.Add(body); });
-        }
-
-        async Task IWeatherForecastController.DeleteWeatherForecastAsync(DateTimeOffset? body)
-        {
-            if (body.HasValue)
-            {
-                var wf = await ((IWeatherForecastController)this).GetWeatherForecastByDateAsync(body.Value);
-                if (wf != null)
-                {
-                    _data.Remove(wf);
-                }
-            }
-            else
-            {
-                _data.Clear();
-            }
         }
 
         async Task IWeatherForecastController.PutWeatherForecastAsync(WeatherForecast body)
@@ -56,7 +39,7 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
             var wf = await ((IWeatherForecastController)this).GetWeatherForecastByDateAsync(body.Date);
             if (wf == null)
             {
-                await ((IWeatherForecastController)this).PostWeatherForecastAsync(body);
+                await ((IWeatherForecastController)this).PostAsync(body);
             }
             else
             {
@@ -70,6 +53,15 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
 #pragma warning disable CS8619
             return Task.Run(() => _data.FirstOrDefault(w => Math.Abs((w.Date.Date - date.Date).TotalDays) == 0));
 #pragma warning restore CS8619
+        }
+
+        async Task IWeatherForecastController.DeleteAsync(DateTimeOffset date)
+        {
+            var wf = await ((IWeatherForecastController)this).GetWeatherForecastByDateAsync(date);
+            if (wf != null)
+            {
+                _data.Remove(wf);
+            }
         }
     }
 }

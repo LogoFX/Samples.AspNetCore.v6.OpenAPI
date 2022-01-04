@@ -31,22 +31,30 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
 
         /// <returns>Success</returns>
 
-        System.Threading.Tasks.Task PostWeatherForecastAsync(WeatherForecast body);
-
-
-        /// <returns>Success</returns>
-
-        System.Threading.Tasks.Task DeleteWeatherForecastAsync(System.DateTimeOffset? body);
+        System.Threading.Tasks.Task PostAsync(WeatherForecast body);
 
 
         /// <returns>Success</returns>
 
         System.Threading.Tasks.Task PutWeatherForecastAsync(WeatherForecast body);
 
+        /// <summary>
+        /// Searches for the forecast on a date
+        /// </summary>
+
 
         /// <returns>Success</returns>
 
         System.Threading.Tasks.Task<WeatherForecast> GetWeatherForecastByDateAsync(System.DateTimeOffset date);
+
+        /// <summary>
+        /// Delete the whole forecast message
+        /// </summary>
+
+
+        /// <returns>OK</returns>
+
+        System.Threading.Tasks.Task DeleteAsync(System.DateTimeOffset date);
 
     }
 
@@ -74,19 +82,11 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
         }
 
         /// <returns>Success</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("WeatherForecast", Name = "PostWeatherForecast")]
-        public System.Threading.Tasks.Task PostWeatherForecast([Microsoft.AspNetCore.Mvc.FromBody] WeatherForecast body)
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("WeatherForecast", Name = "post")]
+        public System.Threading.Tasks.Task Post([Microsoft.AspNetCore.Mvc.FromBody] WeatherForecast body)
         {
 
-            return _implementation.PostWeatherForecastAsync(body);
-        }
-
-        /// <returns>Success</returns>
-        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("WeatherForecast", Name = "DeleteWeatherForecast")]
-        public System.Threading.Tasks.Task DeleteWeatherForecast([Microsoft.AspNetCore.Mvc.FromBody] System.DateTimeOffset? body)
-        {
-
-            return _implementation.DeleteWeatherForecastAsync(body);
+            return _implementation.PostAsync(body);
         }
 
         /// <returns>Success</returns>
@@ -97,6 +97,9 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
             return _implementation.PutWeatherForecastAsync(body);
         }
 
+        /// <summary>
+        /// Searches for the forecast on a date
+        /// </summary>
         /// <returns>Success</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("WeatherForecast/{date}", Name = "GetWeatherForecastByDate")]
         public System.Threading.Tasks.Task<WeatherForecast> GetWeatherForecastByDate([Microsoft.AspNetCore.Mvc.ModelBinding.BindRequired] System.DateTimeOffset date)
@@ -105,19 +108,32 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
             return _implementation.GetWeatherForecastByDateAsync(date);
         }
 
+        /// <summary>
+        /// Delete the whole forecast message
+        /// </summary>
+        /// <returns>OK</returns>
+        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("WeatherForecast/{date}", Name = "delete")]
+        public System.Threading.Tasks.Task Delete([Microsoft.AspNetCore.Mvc.ModelBinding.BindRequired] System.DateTimeOffset date)
+        {
+
+            return _implementation.DeleteAsync(date);
+        }
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class WeatherForecast
     {
-        [Newtonsoft.Json.JsonProperty("date", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("date", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTimeOffset Date { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("temperatureC", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("temperatureC", Required = Newtonsoft.Json.Required.Always)]
         public int TemperatureC { get; set; }
 
         [Newtonsoft.Json.JsonProperty("summary", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(256)]
         public string Summary { get; set; }
 
     }
