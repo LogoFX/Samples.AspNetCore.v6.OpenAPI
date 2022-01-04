@@ -1,12 +1,18 @@
-openapi: 3.0.1
+openapi: 3.1.0
 info:
   title: Samples.AspNetCore.v6.Facade
   version: '1.0'
+  description: The sample API definition
+  contact:
+    name: David Kossoglyad
+    email: david@logoui.co.il
+tags:
+  - name: WeatherForecast
 paths:
-  "/WeatherForecast":
+  /WeatherForecast:
     get:
       tags:
-      - WeatherForecast
+        - WeatherForecast
       operationId: GetWeatherForecast
       responses:
         '200':
@@ -16,38 +22,42 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/WeatherForecast"
+                  $ref: '#/components/schemas/WeatherForecast'
             application/json:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/WeatherForecast"
+                  $ref: '#/components/schemas/WeatherForecast'
             text/json:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/WeatherForecast"
+                  $ref: '#/components/schemas/WeatherForecast'
+      summary: The Weather Forecast
+      description: Represents the short weather update message
     post:
+      description: Creates new forecast record
       tags:
-      - WeatherForecast
+        - WeatherForecast
       operationId: PostWeatherForecast
       requestBody:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/WeatherForecast"
+              $ref: '#/components/schemas/WeatherForecast'
           text/json:
             schema:
-              "$ref": "#/components/schemas/WeatherForecast"
+              $ref: '#/components/schemas/WeatherForecast'
           application/*+json:
             schema:
-              "$ref": "#/components/schemas/WeatherForecast"
+              $ref: '#/components/schemas/WeatherForecast'
       responses:
         '200':
           description: Success
     delete:
+      description: Deletes the forecast record
       tags:
-      - WeatherForecast
+        - WeatherForecast
       operationId: DeleteWeatherForecast
       requestBody:
         content:
@@ -67,48 +77,50 @@ paths:
         '200':
           description: Success
     put:
+      description: Replaces the whole forecast message
       tags:
-      - WeatherForecast
+        - WeatherForecast
       operationId: PutWeatherForecast
       requestBody:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/WeatherForecast"
+              $ref: '#/components/schemas/WeatherForecast'
           text/json:
             schema:
-              "$ref": "#/components/schemas/WeatherForecast"
+              $ref: '#/components/schemas/WeatherForecast'
           application/*+json:
             schema:
-              "$ref": "#/components/schemas/WeatherForecast"
+              $ref: '#/components/schemas/WeatherForecast'
       responses:
         '200':
           description: Success
-  "/WeatherForecast/{date}":
+  '/WeatherForecast/{date}':
     get:
+      description: Searches for the forecast on a date
       tags:
-      - WeatherForecast
+        - WeatherForecast
       operationId: GetWeatherForecastByDate
       parameters:
-      - name: date
-        in: path
-        required: true
-        schema:
-          type: string
-          format: date-time
+        - name: date
+          in: path
+          required: true
+          schema:
+            type: string
+            format: date-time
       responses:
         '200':
           description: Success
           content:
             text/plain:
               schema:
-                "$ref": "#/components/schemas/WeatherForecast"
+                $ref: '#/components/schemas/WeatherForecast'
             application/json:
               schema:
-                "$ref": "#/components/schemas/WeatherForecast"
+                $ref: '#/components/schemas/WeatherForecast'
             text/json:
               schema:
-                "$ref": "#/components/schemas/WeatherForecast"
+                $ref: '#/components/schemas/WeatherForecast'
 components:
   schemas:
     WeatherForecast:
@@ -128,3 +140,6 @@ components:
           type: string
           nullable: true
       additionalProperties: false
+servers:
+  - url: 'http://127.0.0.1:3000'
+    description: Local host
