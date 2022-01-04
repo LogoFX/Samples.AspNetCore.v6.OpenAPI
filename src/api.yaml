@@ -39,7 +39,7 @@ paths:
       description: Creates new forecast record
       tags:
         - WeatherForecast
-      operationId: PostWeatherForecast
+      operationId: post
       requestBody:
         content:
           application/json:
@@ -51,30 +51,9 @@ paths:
           application/*+json:
             schema:
               $ref: '#/components/schemas/WeatherForecast'
+        description: ''
       responses:
-        '200':
-          description: Success
-    delete:
-      description: Deletes the forecast record
-      tags:
-        - WeatherForecast
-      operationId: DeleteWeatherForecast
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: string
-              format: date-time
-          text/json:
-            schema:
-              type: string
-              format: date-time
-          application/*+json:
-            schema:
-              type: string
-              format: date-time
-      responses:
-        '200':
+        '201':
           description: Success
     put:
       description: Replaces the whole forecast message
@@ -121,10 +100,28 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/WeatherForecast'
+      summary: Searches for the forecast on a date
+    delete:
+      tags:
+        - WeatherForecast
+      summary: Delete the whole forecast message
+      operationId: delete
+      responses:
+        '200':
+          description: OK
+      description: Deletes the forecast.
+    parameters:
+      - schema:
+          type: string
+          format: date
+        name: date
+        in: path
+        required: true
 components:
   schemas:
     WeatherForecast:
       type: object
+      additionalProperties: false
       properties:
         date:
           type: string
@@ -139,7 +136,10 @@ components:
         summary:
           type: string
           nullable: true
-      additionalProperties: false
+          maxLength: 256
+      required:
+        - date
+        - temperatureC
 servers:
   - url: 'http://127.0.0.1:3000'
     description: Local host
