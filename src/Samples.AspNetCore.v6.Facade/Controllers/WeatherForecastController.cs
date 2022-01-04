@@ -1,10 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
-
 namespace Samples.AspNetCore.v6.Facade.Controllers
 {
-	[ApiController]
-	[Route("[controller]")]
-	public class WeatherForecastController : ControllerBase
+	public partial class WeatherForecastController : IWeatherForecastController
     {
         private static readonly string[] Summaries = new[]
         {
@@ -29,47 +25,51 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
             }).ToList();
         }
 
-		[HttpGet(Name = "GetWeatherForecast")]
-		public IEnumerable<WeatherForecast> Get()
-		{
-			return _data.ToArray();
-		}
-
-        [HttpGet("{date}", Name = "GetWeatherForecastByDate")]
-        public WeatherForecast? GetByDate(DateTime date)
+        Task<ICollection<WeatherForecast>> IWeatherForecastController.GetWeatherForecastAsync()
         {
-            return _data.FirstOrDefault(w => Math.Abs((w.Date.Date - date.Date).TotalDays) == 0);
+            return Task.Run<ICollection<WeatherForecast>>(() => _data.ToArray());
         }
 
-        [HttpPost(Name = "PostWeatherForecast")]
-        public void Add([FromBody] WeatherForecast weatherForecast)
+        Task IWeatherForecastController.PostWeatherForecastAsync(WeatherForecast body)
         {
-            _data.Add(weatherForecast);
+            return Task.Run(() => { _data.Add(body); });
         }
 
-        [HttpDelete(Name = "DeleteWeatherForecast")]
-        public void Delete([FromBody] DateTime date)
+        async Task IWeatherForecastController.DeleteWeatherForecastAsync(DateTimeOffset? body)
         {
-            var wf = GetByDate(date);
-            if (wf != null)
+            if (body.HasValue)
             {
-                _data.Remove(wf);
+                var wf = await ((IWeatherForecastController)this).GetWeatherForecastByDateAsync(body.Value);
+                if (wf != null)
+                {
+                    _data.Remove(wf);
+                }
+            }
+            else
+            {
+                _data.Clear();
             }
         }
 
-        [HttpPut(Name = "PutWeatherForecast")]
-        public void Update([FromBody] WeatherForecast weatherForecast)
+        async Task IWeatherForecastController.PutWeatherForecastAsync(WeatherForecast body)
         {
-            var wf = GetByDate(weatherForecast.Date);
+            var wf = await ((IWeatherForecastController)this).GetWeatherForecastByDateAsync(body.Date);
             if (wf == null)
             {
-                Add(weatherForecast);
+                await ((IWeatherForecastController)this).PostWeatherForecastAsync(body);
             }
             else
             {
                 var index = _data.IndexOf(wf);
-                _data[index] = weatherForecast;
+                _data[index] = body;
             }
+        }
+
+        Task<WeatherForecast> IWeatherForecastController.GetWeatherForecastByDateAsync(DateTimeOffset date)
+        {
+#pragma warning disable CS8619
+            return Task.Run(() => _data.FirstOrDefault(w => Math.Abs((w.Date.Date - date.Date).TotalDays) == 0));
+#pragma warning restore CS8619
         }
     }
 }
