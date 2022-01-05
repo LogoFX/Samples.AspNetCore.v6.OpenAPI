@@ -1,1 +1,3 @@
-﻿
+﻿{% for response in operation.Responses -%}
+[Microsoft.AspNetCore.Mvc.ProducesResponseType({%- if response.HasType -%}typeof({{ response.Type }}), {%- endif -%}{{ response.StatusCode }})]
+{% endfor -%}
