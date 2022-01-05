@@ -17,58 +17,30 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
-    public interface IWeatherForecastController
+    [Microsoft.AspNetCore.Mvc.Route("api/v1")]
+
+    public partial class WeatherForecastController : Microsoft.AspNetCore.Mvc.ControllerBase
     {
 
         /// <summary>
         /// The Weather Forecast
         /// </summary>
-
         /// <returns>Success</returns>
-
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<WeatherForecast>> GetWeatherForecastAsync();
-
-
+        private partial System.Threading.Tasks.Task<System.Collections.Generic.ICollection<WeatherForecast>> GetWeatherForecastImplementation();
         /// <returns>Success</returns>
-
-        System.Threading.Tasks.Task PostAsync(WeatherForecast body);
-
-
+        private partial System.Threading.Tasks.Task PostImplementation(WeatherForecast body);
         /// <returns>Success</returns>
-
-        System.Threading.Tasks.Task PutWeatherForecastAsync(WeatherForecast body);
-
+        private partial System.Threading.Tasks.Task PutWeatherForecastImplementation(WeatherForecast body);
         /// <summary>
         /// Searches for the forecast on a date
         /// </summary>
-
-
         /// <returns>Success</returns>
-
-        System.Threading.Tasks.Task<WeatherForecast> GetWeatherForecastByDateAsync(System.DateTimeOffset date);
-
+        private partial System.Threading.Tasks.Task<WeatherForecast> GetWeatherForecastByDateImplementation(System.DateTimeOffset date);
         /// <summary>
         /// Delete the whole forecast message
         /// </summary>
-
-
         /// <returns>OK</returns>
-
-        System.Threading.Tasks.Task DeleteAsync(System.DateTimeOffset date);
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
-    [Microsoft.AspNetCore.Mvc.Route("api/v1")]
-
-    public partial class WeatherForecastController : Microsoft.AspNetCore.Mvc.ControllerBase
-    {
-        private IWeatherForecastController _implementation;
-
-        public WeatherForecastController(IWeatherForecastController implementation)
-        {
-            _implementation = implementation;
-        }
+        private partial System.Threading.Tasks.Task DeleteImplementation(System.DateTimeOffset date);
 
         /// <summary>
         /// The Weather Forecast
@@ -78,7 +50,7 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
         public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<WeatherForecast>> GetWeatherForecast()
         {
 
-            return _implementation.GetWeatherForecastAsync();
+            return GetWeatherForecastImplementation();
         }
 
         /// <returns>Success</returns>
@@ -86,7 +58,7 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
         public System.Threading.Tasks.Task Post([Microsoft.AspNetCore.Mvc.FromBody] WeatherForecast body)
         {
 
-            return _implementation.PostAsync(body);
+            return PostImplementation(body);
         }
 
         /// <returns>Success</returns>
@@ -94,7 +66,7 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
         public System.Threading.Tasks.Task PutWeatherForecast([Microsoft.AspNetCore.Mvc.FromBody] WeatherForecast body)
         {
 
-            return _implementation.PutWeatherForecastAsync(body);
+            return PutWeatherForecastImplementation(body);
         }
 
         /// <summary>
@@ -105,7 +77,7 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
         public System.Threading.Tasks.Task<WeatherForecast> GetWeatherForecastByDate([Microsoft.AspNetCore.Mvc.ModelBinding.BindRequired] System.DateTimeOffset date)
         {
 
-            return _implementation.GetWeatherForecastByDateAsync(date);
+            return GetWeatherForecastByDateImplementation(date);
         }
 
         /// <summary>
@@ -116,7 +88,7 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
         public System.Threading.Tasks.Task Delete([Microsoft.AspNetCore.Mvc.ModelBinding.BindRequired] System.DateTimeOffset date)
         {
 
-            return _implementation.DeleteAsync(date);
+            return DeleteImplementation(date);
         }
 
     }

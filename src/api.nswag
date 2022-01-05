@@ -56,7 +56,7 @@
       "excludedParameterNames": [
         "Samples.AspNetCore.v6.Facade.Controllers"
       ],
-      "handleReferences": false,
+      "handleReferences": true,
       "generateImmutableArrayProperties": true,
       "generateImmutableDictionaryProperties": true,
       "jsonSerializerSettingsTransformationMethod": null,
@@ -67,7 +67,7 @@
       "generateDtoTypes": true,
       "generateOptionalPropertiesAsNullable": false,
       "generateNullableReferenceTypes": false,
-      "templateDirectory": null,
+      "templateDirectory": "Templates",
       "typeNameGeneratorType": null,
       "propertyNameGeneratorType": null,
       "enumNameGeneratorType": null,
