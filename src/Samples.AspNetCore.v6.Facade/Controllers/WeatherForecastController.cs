@@ -1,66 +1,54 @@
-﻿namespace Samples.AspNetCore.v6.Facade.Controllers;
+﻿using Microsoft.AspNetCore.Mvc;
+using Samples.AspNetCore.v6.Facade.Services;
+
+namespace Samples.AspNetCore.v6.Facade.Controllers;
 
 public partial class WeatherForecastController
 {
-    private static readonly string[] Summaries = {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
+    private readonly IWeatherForecastService _weatherForecastService;
     private readonly ILogger<WeatherForecastController> _logger;
 
-    private readonly List<WeatherForecast> _data;
-
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public WeatherForecastController(IWeatherForecastService weatherForecastService, ILogger<WeatherForecastController> logger)
     {
+        _weatherForecastService = weatherForecastService;
         _logger = logger;
+    }
 
-        var now = DateTime.Now;
+    private partial Task<ActionResult<ICollection<WeatherForecast>>> GetWeatherForecastImplementation(CancellationToken cancellationToken)
+    {
+        return Task.Run<ActionResult<ICollection<WeatherForecast>>>(() => _weatherForecastService.Get(), cancellationToken);
+    }
 
-        _data = Enumerable.Range(1, 10).Select(index => new WeatherForecast
+    private partial Task<IActionResult> PostImplementation(WeatherForecast body, CancellationToken cancellationToken)
+    {
+        return Task.Run<IActionResult>(() =>
         {
-            Date = now.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        }).ToList();
+            _weatherForecastService.Add(body);
+            return Ok();
+        }, cancellationToken);
     }
 
-    private partial Task<ICollection<WeatherForecast>> GetWeatherForecastImplementation()
+    private partial Task<IActionResult> PutWeatherForecastImplementation(WeatherForecast body, CancellationToken cancellationToken)
     {
-        return Task.Run<ICollection<WeatherForecast>>(() => _data.ToArray());
-    }
-
-    private partial Task PostImplementation(WeatherForecast body)
-    {
-        return Task.Run(() => { _data.Add(body); });
-    }
-
-    private async partial Task PutWeatherForecastImplementation(WeatherForecast body)
-    {
-        var wf = await GetWeatherForecastByDateImplementation(body.Date);
-        if (wf == null)
+        return Task.Run<IActionResult>(() =>
         {
-            await PostImplementation(body);
-        }
-        else
-        {
-            var index = _data.IndexOf(wf);
-            _data[index] = body;
-        }
+            _weatherForecastService.Update(body);
+            return Ok();
+        }, cancellationToken);
     }
 
-    private partial Task<WeatherForecast> GetWeatherForecastByDateImplementation(DateTimeOffset date)
+    private partial Task<ActionResult<WeatherForecast>> GetWeatherForecastByDateImplementation(DateTimeOffset date, CancellationToken cancellationToken)
     {
-#pragma warning disable CS8619
-        return Task.Run(() => _data.FirstOrDefault(w => Math.Abs((w.Date.Date - date.Date).TotalDays) == 0));
-#pragma warning restore CS8619
+        return Task.Run<ActionResult<WeatherForecast>>(() => _weatherForecastService.GetByDate(date) ?? throw new InvalidOperationException(), cancellationToken);
     }
 
-    private async partial Task DeleteImplementation(DateTimeOffset date)
+    private partial Task<IActionResult> DeleteImplementation(DateTimeOffset date, CancellationToken cancellationToken)
     {
-        var wf = await GetWeatherForecastByDateImplementation(date);
-        if (wf != null)
+
+        return Task.Run<IActionResult>(() =>
         {
-            _data.Remove(wf);
-        }
+            _weatherForecastService.Delete(date);
+            return Ok();
+        }, cancellationToken);
     }
 }

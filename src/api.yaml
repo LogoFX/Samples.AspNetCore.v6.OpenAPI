@@ -130,6 +130,11 @@ components:
         temperatureC:
           type: integer
           format: int32
+          minimum: -100
+          maximum: 100
+        temperatureF:
+          type: integer
+          format: int32
         summary:
           type: string
           nullable: true

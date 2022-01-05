@@ -17,6 +17,7 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
+    [Microsoft.AspNetCore.Mvc.ApiController]
     [Microsoft.AspNetCore.Mvc.Route("api/v1")]
 
     public partial class WeatherForecastController : Microsoft.AspNetCore.Mvc.ControllerBase
@@ -26,47 +27,47 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
         /// The Weather Forecast
         /// </summary>
         /// <returns>Success</returns>
-        private partial System.Threading.Tasks.Task<System.Collections.Generic.ICollection<WeatherForecast>> GetWeatherForecastImplementation();
+        private partial System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<WeatherForecast>>> GetWeatherForecastImplementation(System.Threading.CancellationToken cancellationToken);
         /// <returns>Success</returns>
-        private partial System.Threading.Tasks.Task PostImplementation(WeatherForecast body);
+        private partial System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> PostImplementation(WeatherForecast body, System.Threading.CancellationToken cancellationToken);
         /// <returns>Success</returns>
-        private partial System.Threading.Tasks.Task PutWeatherForecastImplementation(WeatherForecast body);
+        private partial System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> PutWeatherForecastImplementation(WeatherForecast body, System.Threading.CancellationToken cancellationToken);
         /// <summary>
         /// Searches for the forecast on a date
         /// </summary>
         /// <returns>Success</returns>
-        private partial System.Threading.Tasks.Task<WeatherForecast> GetWeatherForecastByDateImplementation(System.DateTimeOffset date);
+        private partial System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<WeatherForecast>> GetWeatherForecastByDateImplementation(System.DateTimeOffset date, System.Threading.CancellationToken cancellationToken);
         /// <summary>
         /// Delete the whole forecast message
         /// </summary>
         /// <returns>OK</returns>
-        private partial System.Threading.Tasks.Task DeleteImplementation(System.DateTimeOffset date);
+        private partial System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> DeleteImplementation(System.DateTimeOffset date, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// The Weather Forecast
         /// </summary>
         /// <returns>Success</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("WeatherForecast", Name = "GetWeatherForecast")]
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<WeatherForecast>> GetWeatherForecast()
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<WeatherForecast>>> GetWeatherForecast(System.Threading.CancellationToken cancellationToken)
         {
 
-            return GetWeatherForecastImplementation();
+            return GetWeatherForecastImplementation(cancellationToken);
         }
 
         /// <returns>Success</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("WeatherForecast", Name = "post")]
-        public System.Threading.Tasks.Task Post([Microsoft.AspNetCore.Mvc.FromBody] WeatherForecast body)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> Post([Microsoft.AspNetCore.Mvc.FromBody] WeatherForecast body, System.Threading.CancellationToken cancellationToken)
         {
 
-            return PostImplementation(body);
+            return PostImplementation(body, cancellationToken);
         }
 
         /// <returns>Success</returns>
         [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("WeatherForecast", Name = "PutWeatherForecast")]
-        public System.Threading.Tasks.Task PutWeatherForecast([Microsoft.AspNetCore.Mvc.FromBody] WeatherForecast body)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> PutWeatherForecast([Microsoft.AspNetCore.Mvc.FromBody] WeatherForecast body, System.Threading.CancellationToken cancellationToken)
         {
 
-            return PutWeatherForecastImplementation(body);
+            return PutWeatherForecastImplementation(body, cancellationToken);
         }
 
         /// <summary>
@@ -74,10 +75,10 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
         /// </summary>
         /// <returns>Success</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("WeatherForecast/{date}", Name = "GetWeatherForecastByDate")]
-        public System.Threading.Tasks.Task<WeatherForecast> GetWeatherForecastByDate([Microsoft.AspNetCore.Mvc.ModelBinding.BindRequired] System.DateTimeOffset date)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<WeatherForecast>> GetWeatherForecastByDate([Microsoft.AspNetCore.Mvc.ModelBinding.BindRequired] System.DateTimeOffset date, System.Threading.CancellationToken cancellationToken)
         {
 
-            return GetWeatherForecastByDateImplementation(date);
+            return GetWeatherForecastByDateImplementation(date, cancellationToken);
         }
 
         /// <summary>
@@ -85,10 +86,10 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
         /// </summary>
         /// <returns>OK</returns>
         [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("WeatherForecast/{date}", Name = "delete")]
-        public System.Threading.Tasks.Task Delete([Microsoft.AspNetCore.Mvc.ModelBinding.BindRequired] System.DateTimeOffset date)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> Delete([Microsoft.AspNetCore.Mvc.ModelBinding.BindRequired] System.DateTimeOffset date, System.Threading.CancellationToken cancellationToken)
         {
 
-            return DeleteImplementation(date);
+            return DeleteImplementation(date, cancellationToken);
         }
 
     }
@@ -102,7 +103,11 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
         public System.DateTimeOffset Date { get; set; }
 
         [Newtonsoft.Json.JsonProperty("temperatureC", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Range(-100, 100)]
         public int TemperatureC { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("temperatureF", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int TemperatureF { get; set; }
 
         [Newtonsoft.Json.JsonProperty("summary", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(256)]

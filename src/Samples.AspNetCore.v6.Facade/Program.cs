@@ -1,8 +1,17 @@
-using Samples.AspNetCore.v6.Facade.Controllers;
+using Samples.AspNetCore.v6.Facade.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(o => o.AddPolicy("AllowAny", cp =>
+{
+    cp
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+}));
+
 // Add services to the container.
+builder.Services.AddSingleton<IWeatherForecastService, WeatherForecastService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -20,6 +29,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAny");
 
 app.UseAuthorization();
 
