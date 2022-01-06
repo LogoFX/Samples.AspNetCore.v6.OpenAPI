@@ -17,9 +17,8 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
-    [Microsoft.AspNetCore.Mvc.ApiController]
     [Microsoft.AspNetCore.Mvc.Route("api/v1")]
-
+    [Microsoft.AspNetCore.Mvc.ApiController]
     public partial class WeatherForecastController : Microsoft.AspNetCore.Mvc.ControllerBase
     {
 
@@ -47,6 +46,7 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
         /// The Weather Forecast
         /// </summary>
         /// <returns>Success</returns>
+        [Microsoft.AspNetCore.Mvc.ProducesResponseType(typeof(System.Collections.Generic.ICollection<WeatherForecast>),200)]
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("WeatherForecast", Name = "GetWeatherForecast")]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<WeatherForecast>>> GetWeatherForecast(System.Threading.CancellationToken cancellationToken)
         {
@@ -55,6 +55,7 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
         }
 
         /// <returns>Success</returns>
+        [Microsoft.AspNetCore.Mvc.ProducesResponseType(201)]
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("WeatherForecast", Name = "post")]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> Post([Microsoft.AspNetCore.Mvc.FromBody] WeatherForecast body, System.Threading.CancellationToken cancellationToken)
         {
@@ -63,6 +64,7 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
         }
 
         /// <returns>Success</returns>
+        [Microsoft.AspNetCore.Mvc.ProducesResponseType(200)]
         [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("WeatherForecast", Name = "PutWeatherForecast")]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> PutWeatherForecast([Microsoft.AspNetCore.Mvc.FromBody] WeatherForecast body, System.Threading.CancellationToken cancellationToken)
         {
@@ -74,6 +76,7 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
         /// Searches for the forecast on a date
         /// </summary>
         /// <returns>Success</returns>
+        [Microsoft.AspNetCore.Mvc.ProducesResponseType(typeof(WeatherForecast),200)]
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("WeatherForecast/{date}", Name = "GetWeatherForecastByDate")]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<WeatherForecast>> GetWeatherForecastByDate([Microsoft.AspNetCore.Mvc.ModelBinding.BindRequired] System.DateTimeOffset date, System.Threading.CancellationToken cancellationToken)
         {
@@ -85,6 +88,8 @@ namespace Samples.AspNetCore.v6.Facade.Controllers
         /// Delete the whole forecast message
         /// </summary>
         /// <returns>OK</returns>
+        [Microsoft.AspNetCore.Mvc.ProducesResponseType(200)]
+        [Microsoft.AspNetCore.Mvc.ProducesResponseType(204)]
         [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("WeatherForecast/{date}", Name = "delete")]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> Delete([Microsoft.AspNetCore.Mvc.ModelBinding.BindRequired] System.DateTimeOffset date, System.Threading.CancellationToken cancellationToken)
         {

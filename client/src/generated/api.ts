@@ -208,6 +208,10 @@ export class WeatherForecastClient {
             return response.text().then((_responseText) => {
             return;
             });
+        } else if (status === 204) {
+            return response.text().then((_responseText) => {
+            return;
+            });
         } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
